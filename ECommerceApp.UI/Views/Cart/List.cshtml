@@ -1,0 +1,67 @@
+﻿@model CartListViewModel
+
+@{
+    Layout = "_CartLayout";
+}
+
+<h2>Your Cart</h2>
+<table class="table">
+    <tr>
+        <td>Product Name</td>
+        <td>Unit Price</td>
+        <td>Units In Stock</td>
+        <td>Quantity</td>
+        <td></td>
+    </tr>
+    @foreach (var item in Model.Cart.CartLines)
+    {
+        <tr>
+            <td>@item.Product.ProductName</td>
+            <td>@item.Product.UnitPrice</td>
+            <td>@item.Product.UnitsInStock</td>
+            <td>
+                @item.Quantity
+                <div>
+                    @if (item.Quantity < item.Product.UnitsInStock)
+                    {
+                        <a class="btn btn-primary rounded-pill px-4 py-2"
+                           asp-controller="Cart"
+                           asp-action="IncreaseQuantity"
+                           asp-route-productId="@item.Product.ProductId">
+                            +
+                        </a>
+                    }
+                    @if (item.Quantity > 1)
+                    {
+                        <a class="btn btn-danger rounded-pill px-4 py-2"
+                           asp-controller="Cart"
+                           asp-action="DecreaseQuantity"
+                           asp-route-productId="@item.Product.ProductId">
+                            -
+                        </a>
+                    }
+                </div>
+            </td>
+            <td>
+                <a class="btn btn-xs btn-danger" asp-controller="Cart"
+                   asp-action="Remove" asp-route-productId="@item.Product.ProductId">
+                    Remove From Cart
+                </a>
+            </td>
+        </tr>
+    }
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+            <h3>Total</h3>
+        </td>
+        <td class="text-right">
+            <h3>
+                <strong>@Model.Cart.Total$</strong>
+            </h3>
+        </td>
+    </tr>
+</table>
